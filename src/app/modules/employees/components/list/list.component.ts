@@ -3,6 +3,7 @@ import { Employees } from '../../models/employees.model';
 import { EmployeeService } from '../../services/employees.service';
 import { CurrencyPipe, DatePipe } from '@angular/common';
 import { IndividualConfig, ToastrService } from 'ngx-toastr';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-employee-list',
@@ -16,19 +17,31 @@ export class EmployeeListComponent implements OnInit {
   currentPage: number = 1;
   totalPages: number = 1;
   pageSizes: number[] = [10, 20, 50, 100];
+  savedSearchTerm: string = '';
+  savedCurrentPage: number = 1;
   paginatedEmployees: Employees[] = [];
   sortDirection: boolean = true;
   sortField: string = '';
 
   constructor(
     private employeeService: EmployeeService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
-    this.employeeService.getEmployees().subscribe((data) => {
-      this.employees = data || [];
-      this.updatePagination();
+    this.route.queryParams.subscribe((params) => {
+      this.savedSearchTerm = params['searchTerm'] || '';
+      this.savedCurrentPage = +params['page'] || 1;
+
+      this.searchTerm = this.savedSearchTerm;
+      this.currentPage = this.savedCurrentPage;
+
+      this.employeeService.getEmployees().subscribe((data) => {
+        this.employees = data || [];
+        this.updatePagination();
+      });
     });
   }
 
@@ -78,7 +91,8 @@ export class EmployeeListComponent implements OnInit {
     const filteredEmployees = this.employees.filter(
       (employee) =>
         employee.firstName.toLowerCase().includes(searchTermLower) ||
-        employee.lastName.toLowerCase().includes(searchTermLower)
+        employee.status.toLowerCase().includes(searchTermLower) ||
+        employee.group.toLowerCase().includes(searchTermLower)
     );
     return filteredEmployees;
   }
@@ -101,5 +115,13 @@ export class EmployeeListComponent implements OnInit {
       options.toastClass = 'ngx-toastr bg-red-400 rounded-lg';
       this.toastr.error('Data deleted successfully', 'Delete', options);
     }
+  }
+  navigateToDetail(id: number) {
+    this.router.navigate(['/employee-management/employees/detail', id], {
+      queryParams: {
+        searchTerm: this.searchTerm,
+        page: this.currentPage,
+      },
+    });
   }
 }

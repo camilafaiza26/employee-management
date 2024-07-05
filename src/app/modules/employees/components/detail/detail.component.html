@@ -1,1 +1,56 @@
-<p>employees-detail works!</p>
+<div class="mx-auto px-4 py-4 sm:px-8 lg:container">
+  <div class="flex justify-between items-center my-4">
+    <p class="text-2xl font-semibold">Employee Detail</p>
+  </div>
+
+  <div class="flex flex-row">
+    <div
+      class="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
+    >
+      <div class="flex flex-col items-center p-8">
+        <img
+          class="w-24 h-24 mb-3 rounded-full shadow-lg"
+          src="assets/images/avatar/avatar.jpg"
+          alt="Bonnie image"
+        />
+        <h5 class="mb-1 text-xl font-medium text-gray-900 dark:text-white">
+          {{ employee?.firstName }} {{ employee?.lastName }}
+        </h5>
+        <span class="text-sm text-gray-500 dark:text-gray-400 capitalize">
+          {{ employee?.group }}
+        </span>
+      </div>
+    </div>
+
+    <div
+      class="w-full ms-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
+    >
+      <div class="flex flex-col p-8">
+        <h5 class="mb-1 text-xl font-medium text-gray-900 dark:text-white">
+          General Information
+        </h5>
+        <span class="text-sm text-gray-500 dark:text-gray-400">
+          {{ employee?.description }}
+        </span>
+        <ul class="mt-4 text-sm text-gray-500 dark:text-gray-400">
+          <li><strong>Username:</strong> {{ employee?.username }}</li>
+          <li><strong>Email:</strong> {{ employee?.email }}</li>
+          <li>
+            <strong>Birth Date:</strong>
+            {{ employee?.birthDate }}
+          </li>
+          <li><strong>Basic Salary:</strong> {{ employee?.basicSalary }}</li>
+          <li><strong>Status:</strong> {{ employee?.status }}</li>
+          <li><strong>Group:</strong> {{ employee?.group }}</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="flex flex-row">
+    <a
+      (click)="goBackToList()"
+      class="m-2 px-10 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+      >Ok</a
+    >
+  </div>
+</div>
