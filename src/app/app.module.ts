@@ -8,12 +8,29 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { CurrencyPipe  } from '@angular/common';
+import { CurrencyPipe } from '@angular/common';
+import { ToastrModule } from 'ngx-toastr';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule, ReactiveFormsModule ],
-  providers: [provideClientHydration(),  CurrencyPipe ],
+  imports: [
+    BrowserModule,
+    BrowserAnimationsModule,
+    AppRoutingModule,
+    FormsModule,
+    HttpClientModule,
+    ReactiveFormsModule,
+    ToastrModule.forRoot({
+      timeOut: 10000,
+      positionClass: 'toast-top-right',
+      preventDuplicates: true,
+      closeButton: true,
+      tapToDismiss: true,
+      progressBar: true,
+    }),
+  ],
+  providers: [provideClientHydration(), CurrencyPipe],
   exports: [],
   bootstrap: [AppComponent],
 })

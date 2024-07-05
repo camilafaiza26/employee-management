@@ -4,13 +4,14 @@ import { FormsModule } from '@angular/forms';
 import { EmployeesRoutingModule } from './employees-routing.module';
 import { EmployeeListComponent } from './components/list/list.component';
 
+
 @NgModule({
   declarations: [EmployeeListComponent],
   imports: [
     CommonModule,
     EmployeesRoutingModule,
     FormsModule,
-  
+
   ],
 })
 export class EmployeesModule {}

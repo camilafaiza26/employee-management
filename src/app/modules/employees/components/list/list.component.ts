@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Employees } from '../../models/employees.model';
 import { EmployeeService } from '../../services/employees.service';
-import { CurrencyPipe, DatePipe  } from '@angular/common';
-
+import { CurrencyPipe, DatePipe } from '@angular/common';
+import { IndividualConfig, ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-employee-list',
@@ -20,7 +20,9 @@ export class EmployeeListComponent implements OnInit {
   sortDirection: boolean = true;
   sortField: string = '';
 
-  constructor(private employeeService: EmployeeService
+  constructor(
+    private employeeService: EmployeeService,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -28,7 +30,6 @@ export class EmployeeListComponent implements OnInit {
       this.employees = data || [];
       this.updatePagination();
     });
-
   }
 
   getPageNumbers(): number[] {
@@ -88,8 +89,17 @@ export class EmployeeListComponent implements OnInit {
     this.paginateEmployees();
   }
 
-  // showToast() {
-  //   this.toastr.success('Your message', 'Title');
-  // }
+  showToast(status: string) {
+    let options: Partial<IndividualConfig> = {
+      toastClass: '',
+    };
 
+    if (status === 'warning') {
+      options.toastClass = 'ngx-toastr bg-yellow-300 rounded-lg';
+      this.toastr.warning('Data updated successfully.', 'Edit', options);
+    } else if (status === 'error') {
+      options.toastClass = 'ngx-toastr bg-red-400 rounded-lg';
+      this.toastr.error('Data deleted successfully', 'Delete', options);
+    }
+  }
 }

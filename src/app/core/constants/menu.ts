@@ -18,24 +18,24 @@ export class Menu {
       separator: true,
       items: [
         {
-          icon: 'assets/icons/heroicons/outline/download.svg',
+          icon: 'assets/icons/heroicons/outline/users.svg',
           label: 'List',
           route: '/employee-management/employees/list',
         },
       ],
     },
     {
-      group: 'Lainnya',
+      group: 'Profile',
       separator: false,
       items: [
         {
           icon: 'assets/icons/heroicons/outline/folder.svg',
-          label: 'Folders',
-          route: '/folders',
+          label: 'Profile',
+          route: '/profile',
           children: [
-            { label: 'Current Files', route: '/folders/current-files' },
-            { label: 'Downloads', route: '/folders/download' },
-            { label: 'Trash', route: '/folders/trash' },
+            { label: 'Activity', route: '/profile/current-files' },
+            { label: 'Downloads', route: '/profile/download' },
+            { label: 'Trash', route: '/profile/trash' },
           ],
         },
       ],

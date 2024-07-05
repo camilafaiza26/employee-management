@@ -1,6 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 
 @import url("https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap");
+@import "ngx-toastr/toastr";
 
 @tailwind base;
 @tailwind components;
@@ -21,4 +22,9 @@
   animation: fade-in-up 0.2s;
   opacity: 1;
   transition-duration: 200ms;
+}
+.ngx-toastr {
+  margin: 2px !important;
+  border-radius: 15px !important;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.03);
 }
