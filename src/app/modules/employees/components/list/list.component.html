@@ -1,0 +1,452 @@
+<div class="mx-auto px-4 py-4 sm:px-8 lg:container">
+  <div class="flex justify-between items-center my-4">
+    <p class="text-2xl font-semibold">Employee List</p>
+  </div>
+
+  <div
+    class="bg-white dark:bg-gray-800 shadow-md sm:rounded-lg overflow-hidden"
+  >
+    <div
+      class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4"
+    >
+      <div class="w-full md:w-1/2">
+        <div class="flex items-center">
+          <label for="simple-search" class="sr-only">Search</label>
+          <div class="relative w-full">
+            <div
+              class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
+            >
+              <svg
+                aria-hidden="true"
+                class="w-5 h-5 text-gray-500 dark:text-gray-400"
+                fill="currentColor"
+                viewbox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </div>
+            <input
+              type="text"
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+              placeholder="Search"
+              name="searchTerm"
+              [(ngModel)]="searchTerm"
+              (input)="updatePagination()"
+            />
+          </div>
+        </div>
+      </div>
+      <div
+        class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0"
+      >
+        <button
+          type="button"
+          class="flex items-center justify-center text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
+        >
+          <svg
+            class="h-3.5 w-3.5 mr-2"
+            fill="currentColor"
+            viewbox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+          >
+            <path
+              clip-rule="evenodd"
+              fill-rule="evenodd"
+              d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
+            />
+          </svg>
+          Add Employee
+        </button>
+        <div class="flex items-center space-x-3 w-full md:w-auto">
+          <button
+            id="actionsDropdownButton"
+            data-dropdown-toggle="actionsDropdown"
+            class="w-full md:w-auto flex items-center justify-center py-2 px-4 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+            type="button"
+          >
+            <svg
+              class="-ml-1 mr-1.5 w-5 h-5"
+              fill="currentColor"
+              viewbox="0 0 20 20"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+            >
+              <path
+                clip-rule="evenodd"
+                fill-rule="evenodd"
+                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+              />
+            </svg>
+            Actions
+          </button>
+          <div
+            id="actionsDropdown"
+            class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600"
+          >
+            <ul
+              class="py-1 text-sm text-gray-700 dark:text-gray-200"
+              aria-labelledby="actionsDropdownButton"
+            ></ul>
+            <div class="py-1">
+              <a
+                href="#"
+                class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                >Delete all</a
+              >
+            </div>
+          </div>
+          <button
+            id="filterDropdownButton"
+            data-dropdown-toggle="filterDropdown"
+            class="w-full md:w-auto flex items-center justify-center py-2 px-4 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+            type="button"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+              class="h-4 w-4 mr-2 text-gray-400"
+              viewbox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M3 3a1 1 0 011-1h12a1 1 0 011 1v3a1 1 0 01-.293.707L12 11.414V15a1 1 0 01-.293.707l-2 2A1 1 0 018 17v-5.586L3.293 6.707A1 1 0 013 6V3z"
+                clip-rule="evenodd"
+              />
+            </svg>
+            Filter
+            <svg
+              class="-mr-1 ml-1.5 w-5 h-5"
+              fill="currentColor"
+              viewbox="0 0 20 20"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+            >
+              <path
+                clip-rule="evenodd"
+                fill-rule="evenodd"
+                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+              />
+            </svg>
+          </button>
+          <div
+            id="filterDropdown"
+            class="z-10 hidden w-48 p-3 bg-white rounded-lg shadow dark:bg-gray-700"
+          >
+            <h6 class="mb-3 text-sm font-medium text-gray-900 dark:text-white">
+              Choose Status
+            </h6>
+            <ul
+              class="space-y-2 text-sm"
+              aria-labelledby="filterDropdownButton"
+            >
+              <li class="flex items-center">
+                <input
+                  id="apple"
+                  type="checkbox"
+                  value=""
+                  class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                />
+                <label
+                  for="apple"
+                  class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100"
+                  >Active</label
+                >
+              </li>
+              <li class="flex items-center">
+                <input
+                  id="fitbit"
+                  type="checkbox"
+                  value=""
+                  class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                />
+                <label
+                  for="fitbit"
+                  class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100"
+                  >Microsoft (16)</label
+                >
+              </li>
+              <li class="flex items-center">
+                <input
+                  id="razor"
+                  type="checkbox"
+                  value=""
+                  class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                />
+                <label
+                  for="razor"
+                  class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100"
+                  >Razor (49)</label
+                >
+              </li>
+              <li class="flex items-center">
+                <input
+                  id="nikon"
+                  type="checkbox"
+                  value=""
+                  class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                />
+                <label
+                  for="nikon"
+                  class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100"
+                  >Nikon (12)</label
+                >
+              </li>
+              <li class="flex items-center">
+                <input
+                  id="benq"
+                  type="checkbox"
+                  value=""
+                  class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                />
+                <label
+                  for="benq"
+                  class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100"
+                  >BenQ (74)</label
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="overflow-x-auto">
+      <table
+        class="w-full text-sm text-center text-gray-500 dark:text-gray-400"
+      >
+        <thead
+          class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+        >
+          <tr>
+            <th class="px-4 py-2 cursor-pointer">ID</th>
+            <th class="px-4 py-2 cursor-pointer">First Name</th>
+
+            <th class="px-4 py-2 cursor-pointer">Email</th>
+            <th class="px-4 py-2 cursor-pointer">Birth Date</th>
+            <th class="px-4 py-2 cursor-pointer">Basic Salary</th>
+            <th class="px-4 py-2 cursor-pointer">Status</th>
+            <th class="px-4 py-2 cursor-pointer">Group</th>
+            <th class="px-4 py-2 cursor-pointer">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            class="border-b dark:border-gray-700"
+            *ngFor="let employee of paginatedEmployees"
+          >
+            <th
+              scope="row"
+              class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+            >
+              {{ employee.id }}
+            </th>
+            <td class="px-4 py-3">
+              {{ employee.firstName + " " + employee.lastName }}
+            </td>
+
+            <td class="px-4 py-3">{{ employee.email }}</td>
+            <td class="px-4 py-3">
+              {{ employee.birthDate | date : "dd/MM/yy" }}
+            </td>
+
+            <td class="px-4 py-3">
+              {{ employee.basicSalary | currency : "Rp. " : "code" : "1.2-2" }}
+            </td>
+
+            <td class="px-4 py-3">
+              <span
+                [ngClass]="{
+                  'bg-blue-100 text-blue-800': employee.status === 'active',
+                  'bg-green-100 text-green-800':
+                    employee.status === 'reassigned',
+                  'bg-red-100 text-red-800': employee.status === 'resigned',
+                  'bg-gray-100 text-gray-800': employee.status === 'retired',
+                  'bg-yellow-100 text-yellow-800': employee.status === 'probationary',
+                  'bg-purple-100 text-purple-800': employee.status === 'on leave',
+                  'bg-pink-100 text-pink-800': employee.status === 'demoted',
+                  'bg-red-200 text-red-800': employee.status === 'suspended',
+                  'bg-red-300 text-red-800': employee.status === 'terminated',
+                }"
+                class="bg-blue-100 text-blue-800 capitalize text-xs font-medium me-2 px-3 py-1 rounded-full dark:bg-blue-900 dark:text-blue-300"
+              >
+                {{ employee.status }}</span
+              >
+            </td>
+            <td class="px-4 py-3">{{ employee.group }}</td>
+            <td class="px-4 py-4 flex items-center justify-center">
+              <button
+                (click)="showToast()"
+                class="inline-flex items-center me-2 p-0.5 text-sm font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none dark:text-gray-400 dark:hover:text-gray-100"
+                type="button"
+              >
+                <svg
+                  class="w-5 h-5 text-primary-600 dark:text-white"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                  <g
+                    id="SVGRepo_tracerCarrier"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  ></g>
+                  <g id="SVGRepo_iconCarrier">
+                    <path
+                      d="M15.2869 3.15178L14.3601 4.07866L5.83882 12.5999L5.83881 12.5999C5.26166 13.1771 4.97308 13.4656 4.7249 13.7838C4.43213 14.1592 4.18114 14.5653 3.97634 14.995C3.80273 15.3593 3.67368 15.7465 3.41556 16.5208L2.32181 19.8021L2.05445 20.6042C1.92743 20.9852 2.0266 21.4053 2.31063 21.6894C2.59466 21.9734 3.01478 22.0726 3.39584 21.9456L4.19792 21.6782L7.47918 20.5844L7.47919 20.5844C8.25353 20.3263 8.6407 20.1973 9.00498 20.0237C9.43469 19.8189 9.84082 19.5679 10.2162 19.2751C10.5344 19.0269 10.8229 18.7383 11.4001 18.1612L11.4001 18.1612L19.9213 9.63993L20.8482 8.71306C22.3839 7.17735 22.3839 4.68748 20.8482 3.15178C19.3125 1.61607 16.8226 1.61607 15.2869 3.15178Z"
+                      stroke="#333dc7"
+                      stroke-width="1.5"
+                    ></path>
+                    <path
+                      opacity="0.5"
+                      d="M14.36 4.07812C14.36 4.07812 14.4759 6.04774 16.2138 7.78564C17.9517 9.52354 19.9213 9.6394 19.9213 9.6394M4.19789 21.6777L2.32178 19.8015"
+                      stroke="#333dc7"
+                      stroke-width="1.5"
+                    ></path>
+                  </g>
+                </svg>
+              </button>
+              <button
+                class="inline-flex items-center p-0.5 text-sm font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none dark:text-gray-400 dark:hover:text-gray-100"
+                type="button"
+              >
+                <svg
+                  class="w-5 h-5 text-red-800 dark:text-white"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                  <g
+                    id="SVGRepo_tracerCarrier"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  ></g>
+                  <g id="SVGRepo_iconCarrier">
+                    <path
+                      d="M9.17065 4C9.58249 2.83481 10.6937 2 11.9999 2C13.3062 2 14.4174 2.83481 14.8292 4"
+                      stroke="#fd1c1c"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                    ></path>
+                    <path
+                      d="M20.5 6H3.49988"
+                      stroke="#fd1c1c"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                    ></path>
+                    <path
+                      d="M18.3735 15.3991C18.1965 18.054 18.108 19.3815 17.243 20.1907C16.378 21 15.0476 21 12.3868 21H11.6134C8.9526 21 7.6222 21 6.75719 20.1907C5.89218 19.3815 5.80368 18.054 5.62669 15.3991L5.16675 8.5M18.8334 8.5L18.6334 11.5"
+                      stroke="#fd1c1c"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                    ></path>
+                    <path
+                      d="M9.5 11L10 16"
+                      stroke="#fd1c1c"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                    ></path>
+                    <path
+                      d="M14.5 11L14 16"
+                      stroke="#fd1c1c"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                    ></path>
+                  </g>
+                </svg>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <nav
+      class="flex flex-col md:flex-row justify-between items-start md:items-center space-y-3 md:space-y-0 p-4"
+      aria-label="Table navigation"
+    >
+      <span class="text-sm font-normal text-gray-500 dark:text-gray-400">
+        Showing
+
+        <select
+          id="pageSize"
+          name="pageSize"
+          [(ngModel)]="pageSize"
+          (change)="updatePagination()"
+          class="mx-2 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+        >
+          <option *ngFor="let size of pageSizes" [value]="size">
+            {{ size }}
+          </option>
+        </select>
+        <span class="font-semibold text-gray-900 dark:text-white"
+          >Per Pages</span
+        >
+      </span>
+      <ul class="inline-flex items-stretch -space-x-px">
+        <li>
+          <button
+            class="flex items-center justify-center h-full py-1.5 px-3 ml-0 text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+            (click)="previousPage()"
+          >
+            <span class="sr-only">Previous</span>
+            <svg
+              class="w-5 h-5"
+              aria-hidden="true"
+              fill="currentColor"
+              viewbox="0 0 20 20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                clip-rule="evenodd"
+              />
+            </svg>
+          </button>
+        </li>
+        <li>
+          <ul class="inline-flex items-stretch -space-x-px">
+            <li *ngFor="let pageNumber of getPageNumbers()">
+              <button
+                [class]="getPageButtonClass(pageNumber)"
+                (click)="goToPage(pageNumber)"
+              >
+                {{ pageNumber }}
+              </button>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <button
+            (click)="nextPage()"
+            class="flex items-center justify-center h-full py-1.5 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+          >
+            <span class="sr-only">Next</span>
+            <svg
+              class="w-5 h-5"
+              aria-hidden="true"
+              fill="currentColor"
+              viewbox="0 0 20 20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                clip-rule="evenodd"
+              />
+            </svg>
+          </button>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</div>

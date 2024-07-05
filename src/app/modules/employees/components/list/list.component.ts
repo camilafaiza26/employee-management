@@ -1,0 +1,95 @@
+import { Component, OnInit } from '@angular/core';
+import { Employees } from '../../models/employees.model';
+import { EmployeeService } from '../../services/employees.service';
+import { CurrencyPipe, DatePipe  } from '@angular/common';
+
+
+@Component({
+  selector: 'app-employee-list',
+  templateUrl: './list.component.html',
+  providers: [CurrencyPipe, DatePipe],
+})
+export class EmployeeListComponent implements OnInit {
+  employees: Employees[] = [];
+  searchTerm: string = '';
+  pageSize: number = 10;
+  currentPage: number = 1;
+  totalPages: number = 1;
+  pageSizes: number[] = [10, 20, 50, 100];
+  paginatedEmployees: Employees[] = [];
+  sortDirection: boolean = true;
+  sortField: string = '';
+
+  constructor(private employeeService: EmployeeService
+  ) {}
+
+  ngOnInit(): void {
+    this.employeeService.getEmployees().subscribe((data) => {
+      this.employees = data || [];
+      this.updatePagination();
+    });
+
+  }
+
+  getPageNumbers(): number[] {
+    return Array.from({ length: this.totalPages }, (_, i) => i + 1);
+  }
+
+  getPageButtonClass(pageNumber: number): string {
+    return `flex items-center justify-center text-sm py-2 px-3 leading-tight ${
+      pageNumber === this.currentPage
+        ? 'text-primary-700 bg-primary-200 hover:bg-primary-300 focus:ring-primary-500 focus:ring-2 ring-primary-400'
+        : 'text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'
+    }`;
+  }
+
+  previousPage(): void {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.paginateEmployees();
+    }
+  }
+
+  nextPage(): void {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+      this.paginateEmployees();
+    }
+  }
+
+  goToPage(page: number): void {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+      this.paginateEmployees();
+    }
+  }
+
+  paginateEmployees(): void {
+    const filteredEmployees = this.filterEmployees();
+    this.paginatedEmployees = filteredEmployees.slice(
+      (this.currentPage - 1) * this.pageSize,
+      this.currentPage * this.pageSize
+    );
+  }
+
+  filterEmployees(): Employees[] {
+    const searchTermLower = this.searchTerm.toLowerCase();
+    const filteredEmployees = this.employees.filter(
+      (employee) =>
+        employee.firstName.toLowerCase().includes(searchTermLower) ||
+        employee.lastName.toLowerCase().includes(searchTermLower)
+    );
+    return filteredEmployees;
+  }
+
+  updatePagination(): void {
+    const filteredEmployees = this.filterEmployees();
+    this.totalPages = Math.ceil(filteredEmployees.length / this.pageSize);
+    this.paginateEmployees();
+  }
+
+  // showToast() {
+  //   this.toastr.success('Your message', 'Title');
+  // }
+
+}
